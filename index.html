@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Video Streaming Website</title>
+    <style>
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh; /* Minimum full viewport height */
+            flex-direction: column; /* Stack items vertically */
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        header img {
+            height: 30px; /* Adjust height as needed */
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        header h1 {
+            font-size: 24px;
+            margin: 0;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        main {
+            display: flex;
+            flex: 1; /* Take remaining space */
+            justify-content: center; /* Center content horizontally */
+            align-items: flex-start; /* Align items to the top */
+            padding: 20px;
+        }
+        #video-list-container {
+            width: 200px;
+            margin-right: 20px;
+            background-color: #f0f0f0;
+            overflow-y: auto; /* Enable scrolling */
+        }
+        #video-list {
+            width: 100%;
+            border-collapse: collapse; /* Remove default spacing between table cells */
+        }
+        #video-list th {
+            background-color: #333;
+            color: #fff;
+            font-size: 18px;
+            padding: 10px;
+            text-align: left;
+        }
+        #video-list td {
+            padding: 8px;
+        }
+        #video-list tr:hover {
+            cursor: pointer;
+            background-color: #ddd;
+        }
+        #video-player {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            margin: 20px;
+        }
+        video {
+            max-width: 100%;
+            max-height: 70vh; /* Limit height of video player */
+        }
+        #video-name {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        #select-message {
+            margin-top: 10px;
+            font-style: italic;
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Video Streaming Website</h1>
+    </header>
+
+    <main>
+        <div id="video-list-container">
+            <table id="video-list">
+                <thead>
+                    <tr>
+                        <th>Video List</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div id="video-player">
+            <p id="video-name"></p>
+            <p id="select-message">Please select a video to play from the list on the left.</p>
+            <video id="video-element" controls></video>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 My Video Streaming Website. All rights reserved.<br />"Big data & Cloud Computing" course at Ariel University.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/videoList');
+                const videoList = await response.json();
+                const videoListElement = document.getElementById('video-list').querySelector('tbody');
+                const videoPlayer = document.getElementById('video-element');
+                const videoNameElement = document.getElementById('video-name');
+                const selectMessage = document.getElementById('select-message');
+
+                videoList.forEach(videoName => {
+                    // Add spaces between words based on capital letters for display
+                    const displayName = videoName.replace(/([A-Z])/g, ' $1').trim();
+
+                    const row = document.createElement('tr');
+                    const cell = document.createElement('td');
+                    cell.textContent = displayName;
+                    row.appendChild(cell);
+                    videoListElement.appendChild(row);
+
+                    row.addEventListener('click', async () => {
+                        const selectedVideoName = videoName; // Get the video name from the clicked row
+                        const videoUrl = `/videos/${selectedVideoName}`;
+                        
+                        try {
+                            videoPlayer.src = videoUrl;
+                            videoPlayer.load();
+                            videoPlayer.play();
+                            videoNameElement.textContent = displayName; // Display the formatted name
+                            selectMessage.style.display = 'none';
+                            videoPlayer.controls = true; // Hide controls initially
+                        } catch (error) {
+                            console.error('Error fetching video file:', error);
+                        }
+                    });
+                });
+
+                // Initially show select message
+                videoPlayer.style.display = 'block'; // Show the video player initially
+                selectMessage.style.display = 'block'; // Show the select message initially
+                videoPlayer.controls = false; // Hide controls initially
+
+                // Listen for clicks on the video list to determine display
+                videoListElement.addEventListener('click', function(e) {
+                    if (e.target.tagName === 'TD') {
+                        selectMessage.style.display = 'none'; // Hide select message when video is clicked
+                    }
+                });
+            } catch (error) {
+                console.error('Error fetching video list:', error);
+            }
+        });
+    </script>
+</body>
+</html>
