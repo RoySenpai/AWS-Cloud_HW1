@@ -1,0 +1,110 @@
+body {
+    display: flex;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    /* Minimum full viewport height */
+    flex-direction: column;
+    /* Stack items vertically */
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+header img {
+    height: 30px;
+    /* Adjust height as needed */
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+header h1 {
+    font-size: 24px;
+    margin: 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+main {
+    display: flex;
+    flex: 1;
+    /* Take remaining space */
+    justify-content: center;
+    /* Center content horizontally */
+    align-items: flex-start;
+    /* Align items to the top */
+    padding: 20px;
+}
+
+#video-list-container {
+    width: 200px;
+    margin-right: 20px;
+    background-color: #f0f0f0;
+    overflow-y: auto;
+    /* Enable scrolling */
+}
+
+#video-list {
+    width: 100%;
+    border-collapse: collapse;
+    /* Remove default spacing between table cells */
+}
+
+#video-list th {
+    background-color: #333;
+    color: #fff;
+    font-size: 18px;
+    padding: 10px;
+    text-align: left;
+}
+
+#video-list td {
+    padding: 8px;
+}
+
+#video-list tr:hover {
+    cursor: pointer;
+    background-color: #ddd;
+}
+
+#video-player {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    margin: 20px;
+}
+
+video {
+    max-width: 100%;
+    max-height: 70vh;
+    /* Limit height of video player */
+}
+
+#video-name {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#select-message {
+    margin-top: 10px;
+    font-style: italic;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+footer p {
+    margin: 0;
+}
